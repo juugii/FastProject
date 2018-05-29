@@ -9,13 +9,15 @@ from __future__ import absolute_import, print_function, division;
 from sklearn.decomposition import PCA
 from sklearn.decomposition import FastICA
 from sklearn.decomposition import KernelPCA
-from sklearn.manifold import TSNE;
+from MulticoreTSNE import MulticoreTSNE as MCTSNE
 from sklearn.manifold import Isomap
 from sklearn.manifold import MDS
 from sklearn.manifold import SpectralEmbedding
 from sklearn.cluster import MiniBatchKMeans
 from scipy.stats import norm;
 import scipy.stats;
+
+import umap
 
 from .Utils import ProgressBar;
 from .DataTypes import PCData;
@@ -24,6 +26,7 @@ from . import _tsne_fix
 
 import numpy as np;
 
+TSNE=MCTSNE(n_jobs=16)
 
 def generate_projections(data, filter_name=None, input_projections=None, lean=False):
     """
@@ -453,6 +456,22 @@ def apply_ISOMap(proj_data, proj_weights=None):
     return result;
 
 
+#UMAP
+def apply_UMAPlocal(proj_data, proj_weights=None):
+    model = umap.UMAP(n_neighbors=10, n_components=2,
+                 metric="euclidean", min_dist=0.2, spread=1.0);
+    result = model.fit_transform(proj_data.T);
+    return result;
+
+
+#UMAP
+def apply_UMAPglobal(proj_data, proj_weights=None):
+    model = umap.UMAP(n_neighbors=50, n_components=2,
+                 metric="euclidean", min_dist=0.2, spread=1.0);
+    result = model.fit_transform(proj_data.T);
+    return result;
+
+
 # PCA with RBF Kernel
 def apply_rbf_PCA(proj_data, proj_weights=None):
     model = KernelPCA(n_components=2, kernel='rbf');
@@ -501,12 +520,16 @@ def get_projection_methods(lean, pca):
         proj_methods['ISOMap'] = apply_ISOMap
         proj_methods['tSNE30'] = apply_tSNE30
         proj_methods['tSNE10'] = apply_tSNE10
+        proj_methods['UMAPlocal'] = apply_UMAPlocal
+	proj_methods['UMAPglobal'] = apply_UMAPglobal
 
     if pca:
 
         proj_methods['ISOMap'] = apply_ISOMap
         proj_methods['tSNE30'] = apply_tSNE30
         proj_methods['tSNE10'] = apply_tSNE10
+	proj_methods['UMAPlocal'] = apply_UMAPlocal
+	proj_methods['UMAPglobal'] = apply_UMAPglobal
 
         if not lean:
             proj_methods['Spectral Embedding'] = apply_spectral_embedding
