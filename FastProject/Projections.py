@@ -26,7 +26,7 @@ from . import _tsne_fix
 
 import numpy as np;
 
-TSNE=MCTSNE(n_jobs=16)
+NB_CORES=16
 
 def generate_projections(data, filter_name=None, input_projections=None, lean=False):
     """
@@ -433,18 +433,18 @@ def apply_ICA(proj_data, proj_weights=None):
 
 # tSNE
 def apply_tSNE10(proj_data, proj_weights=None):
-    model = TSNE(n_components=2, perplexity=10.0, metric="euclidean",
+    model = MCTSNE(n_components=2, perplexity=10.0, metric="euclidean",
                  learning_rate=200, early_exaggeration=4.0,
-                 random_state=RANDOM_SEED);
+                 random_state=RANDOM_SEED, n_jobs=NB_CORES);
     result = model.fit_transform(proj_data.T);
     return result;
 
 
 # tSNE
 def apply_tSNE30(proj_data, proj_weights=None):
-    model = TSNE(n_components=2, perplexity=30.0, metric="euclidean",
+    model = MCTSNE(n_components=2, perplexity=30.0, metric="euclidean",
                  learning_rate=200, early_exaggeration=4.0,
-                 random_state=RANDOM_SEED);
+                 random_state=RANDOM_SEED, n_jobs=NB_CORES);
     result = model.fit_transform(proj_data.T);
     return result;
 
@@ -521,15 +521,15 @@ def get_projection_methods(lean, pca):
         proj_methods['tSNE30'] = apply_tSNE30
         proj_methods['tSNE10'] = apply_tSNE10
         proj_methods['UMAPlocal'] = apply_UMAPlocal
-	proj_methods['UMAPglobal'] = apply_UMAPglobal
+        proj_methods['UMAPglobal'] = apply_UMAPglobal
 
     if pca:
 
         proj_methods['ISOMap'] = apply_ISOMap
         proj_methods['tSNE30'] = apply_tSNE30
         proj_methods['tSNE10'] = apply_tSNE10
-	proj_methods['UMAPlocal'] = apply_UMAPlocal
-	proj_methods['UMAPglobal'] = apply_UMAPglobal
+        proj_methods['UMAPlocal'] = apply_UMAPlocal
+        proj_methods['UMAPglobal'] = apply_UMAPglobal
 
         if not lean:
             proj_methods['Spectral Embedding'] = apply_spectral_embedding

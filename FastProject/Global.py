@@ -21,7 +21,7 @@ import random;
 #                                    "nofilter",  "nomodel",  "pca_filter",
 #                                    "qc",  "subsample_size",
 #                                    "min_signature_genes",  "projections",
-#                                    "weights",  "threshold"]);
+#                                    "weights",  "threshold", "ncores"]);
 # 
 # args.data_file = "";
 # args.housekeeping = "";
@@ -37,6 +37,7 @@ import random;
 # args.projections = [];
 # args.weights = "";
 # args.threshold = None;
+# args.ncores = 16;
 
 
 logger = logging.getLogger("FastProject");

@@ -95,6 +95,9 @@ def parseFPArgs():
         default="weighted_avg",
         help="Pick a method to evaluate signature scores");
 
+    parser.add_argument("-c", "--ncores", metavar="N", type=int,
+			help="Number of available machine cores used to compute tSNE");
+
     args = parser.parse_args();
 
     args = vars(args);  # Convert to a Dictionary
