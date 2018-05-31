@@ -16,7 +16,8 @@ Changes from original work:
 ---------------------------
 
 Implementation of UMAP as dimentional reduction
-Implementation of MultiCore tSNE (ncores is set to 6 by default)
+
+Implementation of MultiCore tSNE (ncores is set to 16 by default)
 
 Dependences:
 ------------
