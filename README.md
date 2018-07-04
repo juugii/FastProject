@@ -15,11 +15,11 @@ Install:
 Changes from original work:
 ---------------------------
 
-Implementation of UMAP as dimentional reduction
+Implementation of UMAP as dimensional reduction method
 
-Implementation of MultiCore tSNE (ncores is set to 16 by default)
+Implementation of MultiCore tSNE (default ncores is set to 16)
 
-Dependences:
+Dependencies:
 ------------
 
 - https://github.com/lmcinnes/umap.git
